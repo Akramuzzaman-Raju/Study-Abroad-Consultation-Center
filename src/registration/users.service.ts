@@ -2,10 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-
+import { EmailService } from '../email/email.service';
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    private emailService: EmailService,
+  ) {}
 
   create(name: string, phone: string, email: string, password: string) {
     const user = this.repo.create({
@@ -43,5 +46,11 @@ export class UsersService {
       throw new NotFoundException('user not found');
     }
     return this.repo.remove(user);
+  }
+  async sendWelcomeEmail(email: string) {
+    const subject = 'Welcome to Our Application';
+    const content = 'Thank you for joining our application.';
+
+    await this.emailService.sendEmail(email, subject, content);
   }
 }

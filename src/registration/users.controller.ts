@@ -6,17 +6,21 @@ import {
   Param,
   Post,
   Session,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { AuthService } from './user.auth';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
+import { EmailDto } from 'src/dtos/email.dto';
 import session from 'express-session';
+import { EmailService } from 'src/email/email.service';
 @Controller('auth')
 export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
+    private emailService: EmailService,
   ) {}
   @Get('/profile')
   profile(@Session() session: any) {
@@ -46,5 +50,11 @@ export class UsersController {
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
+  }
+  @Post('email')
+  async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
+    const { to, subject, content } = sendEmailDto;
+    await this.emailService.sendEmail(to, subject, content);
+    return { message: 'Email sent successfully' };
   }
 }
