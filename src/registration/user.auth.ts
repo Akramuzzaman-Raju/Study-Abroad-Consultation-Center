@@ -24,11 +24,6 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
-
-    //const oldpassword = await this.usersService.find(password);
-
-    //const newpassword = (await scrypt(password, salt, 32)) as Buffer;
-
     if (user.password !== password) {
       throw new BadRequestException('bad password');
     }
