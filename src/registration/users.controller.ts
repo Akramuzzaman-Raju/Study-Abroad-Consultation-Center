@@ -13,14 +13,17 @@ import { UsersService } from './users.service';
 import { AuthService } from './user.auth';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
 import { EmailDto } from 'src/dtos/email.dto';
-import session from 'express-session';
+//import session from 'express-session';
 import { EmailService } from 'src/email/email.service';
+import { ConsultantService } from 'src/consultant/consultant.service';
+import { ConsultantDto } from 'src/dtos/consultant.dto';
 @Controller('auth')
 export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
     private emailService: EmailService,
+    private consultantService: ConsultantService,
   ) {}
   @Get('/profile')
   profile(@Session() session: any) {
@@ -56,5 +59,19 @@ export class UsersController {
     const { to, subject, content } = sendEmailDto;
     await this.emailService.sendEmail(to, subject, content);
     return { message: 'Email sent successfully' };
+  }
+  @Post('/consultant')
+  createConsultant(@Body() body: ConsultantDto) {
+    this.consultantService.create(
+      body.name,
+      body.phone,
+      body.email,
+      body.country,
+    );
+    //return consultant;
+  }
+  @Get('/find')
+  findConsultant(@Param('country') country: string) {
+    return this.consultantService.find(country);
   }
 }
