@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Session,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { EmailDto } from 'src/dtos/email.dto';
 import { EmailService } from 'src/email/email.service';
 import { ConsultantService } from 'src/consultant/consultant.service';
 import { ConsultantDto } from 'src/dtos/consultant.dto';
+import { UpdateDto } from 'src/dtos/update.dto';
 @Controller('auth')
 export class UsersController {
   constructor(
@@ -53,6 +55,10 @@ export class UsersController {
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
+  }
+  @Put('/:id')
+  updateUser(@Param('id') id: string, @Body() body: UpdateDto) {
+    return this.usersService.update(parseInt(id), body);
   }
   @Post('email')
   async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
