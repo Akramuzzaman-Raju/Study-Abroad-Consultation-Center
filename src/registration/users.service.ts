@@ -47,10 +47,4 @@ export class UsersService {
     }
     return this.repo.remove(user);
   }
-  async sendWelcomeEmail(email: string) {
-    const subject = 'Welcome to Our Application';
-    const content = 'Thank you for joining our application.';
-
-    await this.emailService.sendEmail(email, subject, content);
-  }
 }

@@ -15,16 +15,18 @@ import { AuthService } from './user.auth';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
 import { EmailDto } from 'src/dtos/email.dto';
 //import session from 'express-session';
-import { EmailService } from 'src/email/email.service';
+
 import { ConsultantService } from 'src/consultant/consultant.service';
 import { ConsultantDto } from 'src/dtos/consultant.dto';
 import { UpdateDto } from 'src/dtos/update.dto';
+import { EmailService } from 'src/email/email.service';
 @Controller('auth')
 export class UsersController {
   constructor(
+    private emailService: EmailService,
     private usersService: UsersService,
     private authService: AuthService,
-    private emailService: EmailService,
+
     private consultantService: ConsultantService,
   ) {}
   @Get('/profile')
@@ -63,8 +65,13 @@ export class UsersController {
   @Post('email')
   async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
     const { to, subject, content } = sendEmailDto;
-    await this.emailService.sendEmail(to, subject, content);
-    return { message: 'Email sent successfully' };
+
+    const mydata = {
+      to: to,
+      subject: subject,
+      text: content,
+    };
+    return this.emailService.sendEmail(mydata);
   }
   @Post('/consultant')
   createConsultant(@Body() body: ConsultantDto) {
@@ -74,7 +81,6 @@ export class UsersController {
       body.email,
       body.country,
     );
-    //return consultant;
   }
   @Get('/find')
   findConsultant(@Param('country') country: string) {
