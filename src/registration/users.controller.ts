@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Patch,
   Session,
   ValidationPipe,
 } from '@nestjs/common';
@@ -20,15 +21,24 @@ import { ConsultantService } from 'src/consultant/consultant.service';
 import { ConsultantDto } from 'src/dtos/consultant.dto';
 import { UpdateDto } from 'src/dtos/update.dto';
 import { EmailService } from 'src/email/email.service';
+import { MessageService } from 'src/message/msg.service';
+import { MsgDto } from 'src/dtos/msg.dto';
 @Controller('auth')
 export class UsersController {
   constructor(
     private emailService: EmailService,
     private usersService: UsersService,
     private authService: AuthService,
-
+    private messageService: MessageService,
     private consultantService: ConsultantService,
   ) {}
+  @Post('/message')
+  createMessage(@Body() body: MsgDto) {
+    this.messageService.create(
+      body.name,
+      body.content,
+    );
+  }
   @Get('/profile')
   profile(@Session() session: any) {
     return this.usersService.findOne(session.userId);
@@ -54,9 +64,21 @@ export class UsersController {
     session.userId = user.id;
     return user;
   }
+  @Post('/:id')
+  findUser(@Param('id') id: string) {
+    return this.usersService.findOne(parseInt(id));
+  }
+  @Delete('/msg/:id')
+  removeMessage(@Param('id') id: string) {
+    return this.messageService.remove(parseInt(id));
+  }
   @Delete('/:id')
   removeUser(@Param('id') id: string) {
     return this.usersService.remove(parseInt(id));
+  }
+  @Patch('/msg/:id')
+  updateMessage(@Param('id') id: string, @Body() body: MsgDto) {
+    return this.messageService.update(parseInt(id), body);
   }
   @Put('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateDto) {
@@ -86,4 +108,5 @@ export class UsersController {
   findConsultant(@Param('country') country: string) {
     return this.consultantService.find(country);
   }
+  
 }
