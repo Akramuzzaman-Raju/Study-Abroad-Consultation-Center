@@ -7,5 +7,5 @@ export class Message {
   @Column()
   name: string;
   @Column()
-  content: string;
+  cont: string;
 }

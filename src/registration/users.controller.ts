@@ -36,8 +36,19 @@ export class UsersController {
   createMessage(@Body() body: MsgDto) {
     this.messageService.create(
       body.name,
-      body.content,
+      body.cont,
     );
+  }
+  @Post('email')
+  async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
+    const { to, subject, content } = sendEmailDto;
+
+    const mydata = {
+      to: to,
+      subject: subject,
+      text: content,
+    };
+    return this.emailService.sendEmail(mydata);
   }
   @Get('/profile')
   profile(@Session() session: any) {
@@ -84,17 +95,7 @@ export class UsersController {
   updateUser(@Param('id') id: string, @Body() body: UpdateDto) {
     return this.usersService.update(parseInt(id), body);
   }
-  @Post('email')
-  async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
-    const { to, subject, content } = sendEmailDto;
-
-    const mydata = {
-      to: to,
-      subject: subject,
-      text: content,
-    };
-    return this.emailService.sendEmail(mydata);
-  }
+  //
   @Post('/consultant')
   createConsultant(@Body() body: ConsultantDto) {
     this.consultantService.create(

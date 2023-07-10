@@ -8,11 +8,11 @@ export class MessageService {
     @InjectRepository(Message) private repo: Repository<Message>,
   ) {}
 
-  create(name: string, content: string) {
+  create(name: string, cont: string) {
    // console.log("create", name, content );
     const message = this.repo.create({
       name,
-      content,
+      cont,
     });
 
     return this.repo.save(message);

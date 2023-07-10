@@ -5,5 +5,6 @@ export class MsgDto {
   name: string;
 
   @IsNotEmpty()
-  content: string;
+  cont: string;
+  //
 }
