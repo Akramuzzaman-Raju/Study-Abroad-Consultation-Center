@@ -15,10 +15,6 @@ import { UsersService } from './users.service';
 import { AuthService } from './user.auth';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
 import { EmailDto } from 'src/dtos/email.dto';
-//import session from 'express-session';
-
-import { ConsultantService } from 'src/consultant/consultant.service';
-import { ConsultantDto } from 'src/dtos/consultant.dto';
 import { UpdateDto } from 'src/dtos/update.dto';
 import { EmailService } from 'src/email/email.service';
 import { MessageService } from 'src/message/msg.service';
@@ -30,7 +26,6 @@ export class UsersController {
     private usersService: UsersService,
     private authService: AuthService,
     private messageService: MessageService,
-    private consultantService: ConsultantService,
   ) {}
   @Post('/message')
   createMessage(@Body() body: MsgDto) {
@@ -94,20 +89,5 @@ export class UsersController {
   @Put('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateDto) {
     return this.usersService.update(parseInt(id), body);
-  }
-  //
-  @Post('/consultant')
-  createConsultant(@Body() body: ConsultantDto) {
-    this.consultantService.create(
-      body.name,
-      body.phone,
-      body.email,
-      body.country,
-    );
-  }
-  @Get('/find')
-  findConsultant(@Param('country') country: string) {
-    return this.consultantService.find(country);
-  }
-  
+  } 
 }

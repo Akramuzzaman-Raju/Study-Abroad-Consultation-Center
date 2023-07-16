@@ -10,10 +10,14 @@ import { ConsultantService } from 'src/consultant/consultant.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MessageService } from 'src/message/msg.service';
 import { Message } from 'src/message/msg.entity';
+import { ScheduleService } from 'src/schedule/shedule.service';
+import { Schedule } from 'src/schedule/schedule.entity';
+import { ScheduleController } from 'src/schedule/schedule.controller';
+import { ConsultantController } from 'src/consultant/consultant.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Consultant, Message]),
+    TypeOrmModule.forFeature([User, Consultant, Message, Schedule]),
     MailerModule.forRoot({
       transport: {
         port: 465,
@@ -25,7 +29,7 @@ import { Message } from 'src/message/msg.entity';
       },
     }),
   ],
-  controllers: [UsersController],
-  providers: [UsersService, AuthService, EmailService, ConsultantService, MessageService],
+  controllers: [UsersController, ScheduleController, ConsultantController],
+  providers: [UsersService, AuthService, EmailService, ConsultantService, MessageService, ScheduleService],
 })
 export class UsersModule {}
