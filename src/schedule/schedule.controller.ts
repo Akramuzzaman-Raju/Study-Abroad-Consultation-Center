@@ -2,13 +2,10 @@ import {
     Body,
     Controller,
     Delete,
-    Get,
     Param,
     Post,
     Put,
     Patch,
-    Session,
-    ValidationPipe,
   } from '@nestjs/common';
   
   import { ScheduleService } from 'src/schedule/shedule.service';
