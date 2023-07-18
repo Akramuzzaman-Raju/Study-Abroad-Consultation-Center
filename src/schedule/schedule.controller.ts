@@ -39,4 +39,3 @@ import { UpdatescheduleDto } from 'src/dtos/Updateschedule.dto';
     return this.scheduleService.update(parseInt(id), body);
   } 
 }
-  

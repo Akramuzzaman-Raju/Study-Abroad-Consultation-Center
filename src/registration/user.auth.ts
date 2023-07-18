@@ -14,11 +14,8 @@ export class AuthService {
       throw new BadRequestException('email in use');
     }
     const user = await this.usersService.create(name, phone, email, password);
-
-    // return the user
     return user;
   }
-  //
   async signin(email: string, password: string) {
     const [user] = await this.usersService.find(email);
     if (!user) {

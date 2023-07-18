@@ -33,6 +33,7 @@ export class UsersController {
       body.name,
       body.cont,
     );
+    return 'Messege sent to ' + body.name + ' successfully';
   }
   @Post('email')
   async sendEmail(@Body(ValidationPipe) sendEmailDto: EmailDto) {
@@ -46,9 +47,11 @@ export class UsersController {
     return this.emailService.sendEmail(mydata);
   }
   @Get('/profile')
-  profile(@Session() session: any) {
-    return this.usersService.findOne(session.userId);
-  }
+  async profile(@Session() session: any) {
+  const user = await this.usersService.findOne(session.userId);
+  const { password, ...profileData } = user;
+  return profileData;
+}
   @Post('/signout')
   logout(@Session() session: any) {
     session.userId = null;
@@ -62,13 +65,13 @@ export class UsersController {
       body.password,
     );
     session.userId = user.id;
-    return user;
+    return ' Hello ' + user.name + ' your account has been created';
   }
   @Post('/signin')
   async signin(@Body() body: LoginUserDto, @Session() session: any) {
     const user = await this.authService.signin(body.email, body.password);
     session.userId = user.id;
-    return user;
+    return ' Hello ' + user.name;
   }
   @Post('/:id')
   findUser(@Param('id') id: string) {

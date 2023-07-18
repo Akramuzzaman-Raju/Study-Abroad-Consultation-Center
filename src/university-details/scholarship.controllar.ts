@@ -9,12 +9,12 @@ import {
   } from '@nestjs/common';
 import { ScholarshipDto } from 'src/dtos/scholarship.dto';
 import { ScholarshipService } from './scholarship.service';
-  @Controller('scholarship')
+  @Controller('scholarships')
   export class ScholarshipController {
     constructor(
       private scholarshipService: ScholarshipService,
     ) {}
-    @Post('/scholarships')
+    @Post('/scholarship')
     createMeeting(@Body() body: ScholarshipDto) {
       this.scholarshipService.create(
         body.scholarshipId,
