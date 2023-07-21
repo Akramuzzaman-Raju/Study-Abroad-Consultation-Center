@@ -15,7 +15,7 @@ import { UsersModule } from './registration/users.module';
       password: '1234',
       database: 'Users',
       autoLoadEntities: true,
-      //entities: [User, Report],
+      //entities: [User],
       synchronize: true,
     }),
     UsersModule,

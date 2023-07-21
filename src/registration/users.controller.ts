@@ -9,6 +9,7 @@ import {
   Patch,
   Session,
   ValidationPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -46,9 +47,12 @@ export class UsersController {
     };
     return this.emailService.sendEmail(mydata);
   }
-  @Get('/profile')
-  async profile(@Session() session: any) {
+@Get('/profile')
+async profile(@Session() session: any) {
   const user = await this.usersService.findOne(session.userId);
+  if (!user) {
+    throw new NotFoundException("User not found");
+  }
   const { password, ...profileData } = user;
   return profileData;
 }
