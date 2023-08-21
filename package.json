@@ -22,8 +22,11 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/platform-express": "^9.4.3",
     "@nestjs/typeorm": "^10.0.0",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express-session": "^1.17.3",
     "pg": "^8.11.0",
     "postgres": "^3.3.5",
     "reflect-metadata": "^0.1.13",

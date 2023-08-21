@@ -4,6 +4,7 @@ import {
     Delete,
     Param,
     Post,
+    Get,
     Put,
     Patch,
   } from '@nestjs/common';
@@ -36,5 +37,9 @@ import { ScholarshipService } from './scholarship.service';
   updateScholarship(@Param('id') id: string, @Body() body: ScholarshipDto) {
     return this.scholarshipService.update(parseInt(id), body);
   } 
+  @Get('/find')
+  findMeeting(@Param('id')id: string) {
+    return this.scholarshipService.find(id);
+  }
 }
   

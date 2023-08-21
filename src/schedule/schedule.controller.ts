@@ -6,6 +6,7 @@ import {
     Post,
     Put,
     Patch,
+    Get,
   } from '@nestjs/common';
   
   import { ScheduleService } from 'src/schedule/shedule.service';
@@ -27,15 +28,19 @@ import { UpdatescheduleDto } from 'src/dtos/Updateschedule.dto';
       return "new meeting created successfully"
     }
   @Post('/:id')
-  findMeeting(@Param('id') id: string) {
+  addMeeting(@Param('id') id: string) {
     return this.scheduleService.findOne(parseInt(id));
   }
   @Delete('/:id')
-  removeMeeting(@Param('id') id: string) {
-    return this.scheduleService.remove(parseInt(id));
+  removeMeeting(@Param('id')  id: string) {
+    return this.scheduleService.remove(parseInt( id));
   }
   @Patch('/:id')
   updateMeeting(@Param('id') id: string, @Body() body: UpdatescheduleDto) {
     return this.scheduleService.update(parseInt(id), body);
   } 
+  @Get('/find')
+  findMeeting(@Param('id')id: string) {
+    return this.scheduleService.find(id);
+  }
 }

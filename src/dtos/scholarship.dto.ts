@@ -1,12 +1,12 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class ScholarshipDto {
-  @IsOptional()
+  @IsNotEmpty()
   scholarshipId: string;
-  @IsOptional()
+  @IsNotEmpty()
   universityName: string;
-  @IsOptional()
+  @IsNotEmpty()
   eligibleCourse: string;
-  @IsOptional()
+  @IsNotEmpty()
   possibleScholarship: string;
 }

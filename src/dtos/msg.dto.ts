@@ -1,7 +1,8 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class MsgDto {
-  @IsNotEmpty()
+  //@IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @IsNotEmpty()
