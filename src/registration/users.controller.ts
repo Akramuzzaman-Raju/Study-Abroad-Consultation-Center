@@ -10,6 +10,7 @@ import {
   Session,
   ValidationPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -20,6 +21,7 @@ import { UpdateDto } from 'src/dtos/update.dto';
 import { EmailService } from 'src/email/email.service';
 import { MessageService } from 'src/message/msg.service';
 import { MsgDto } from 'src/dtos/msg.dto';
+import { Middleware } from 'src/middleware';
 @Controller('auth')
 export class UsersController {
   constructor(
@@ -48,13 +50,17 @@ export class UsersController {
     return this.emailService.sendEmail(mydata);
   }
 @Get('/profile')
-async profile(@Session() session: any) {
-  const user = await this.usersService.findOne(session.userId);
+@UseGuards(Middleware)
+async profile(@Body() body ) {
+  
+  
+  const user = await this.usersService.findOne(body.id);
   if (!user) {
     throw new NotFoundException("User not found");
   }
-  const { password, ...profileData } = user;
-  return profileData;
+  // const { password, ...profileData } = user;
+  // return profileData;
+  return user;
 }
   @Post('/signout')
   logout(@Session() session: any) {
@@ -69,13 +75,17 @@ async profile(@Session() session: any) {
       body.password,
     );
     session.userId = user.id;
-    return ' Hello ' + user.name + ' your account has been created';
+    // return ' Hello ' + user.name + ' your account has been created';
+    return user;
+
   }
   @Post('/signin')
+  
   async signin(@Body() body: LoginUserDto, @Session() session: any) {
     const user = await this.authService.signin(body.email, body.password);
     session.userId = user.id;
-    return ' Hello ' + user.name;
+    
+    return user ;
   }
   @Post('/:id')
   findUser(@Param('id') id: string) {
@@ -93,8 +103,9 @@ async profile(@Session() session: any) {
   updateMessage(@Param('id') id: string, @Body() body: MsgDto) {
     return this.messageService.update(parseInt(id), body);
   }
-  @Put('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateDto) {
-    return this.usersService.update(parseInt(id), body);
+  @Put('edit/')
+  @UseGuards(Middleware)
+  updateUser( @Body() body) {
+    return this.usersService.update( body);
   } 
 }
